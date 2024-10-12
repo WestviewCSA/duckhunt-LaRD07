@@ -18,6 +18,7 @@ public class Character {
 	private double xScale = 1.0, yScale = 1.0;	//scaling (sizing)
 	private int width = 50, height = 50;
 	private boolean showHitBox = true;
+	private int paintOffset = 0;
 	
 	public Character(String fileName) {
 		img = getImage("/imgs/"+fileName); // load the image for Tree
@@ -104,6 +105,11 @@ public class Character {
 		this.y = y;
 	}
 	
+	public void setPaintOffset(int value)
+	{
+        paintOffset = value;
+    } //image painting offset
+	
 
 	public void changePicture(String newFileName) {
 		img = getImage(newFileName);
@@ -129,9 +135,9 @@ public class Character {
 	}
 
 	private void init(double a, double b) {
-		tx.setToTranslation(a, b);
-		tx.scale(xScale, yScale);
-	}
+        tx.setToTranslation(a - paintOffset, b - paintOffset);
+        tx.scale(xScale, yScale);
+    }
 
 	private Image getImage(String path) {
 		Image tempImage = null;

@@ -23,6 +23,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Fairy fairy2 = new Fairy();
 	Fairy fairy3 = new Fairy();
 	Bunny bunny1 = new Bunny();
+	boolean waitForSpaceBar = true;
+	
+	Music gooned = new Music("C:\\Users\\BAMMo\\OneDrive\\Documents\\GitHub\\duckhunt-LaRD07\\Duck Hunt Student\\src\\nightmare.wav", false);
+	Music takanaka = new Music("C:\\\\Users\\\\BAMMo\\\\OneDrive\\\\Documents\\\\GitHub\\\\duckhunt-LaRD07\\\\Duck Hunt Student\\\\src\\\\background.wav", true);
 	
 	GameBackground ground = new GameBackground("ground.png");
 	
@@ -42,22 +46,27 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		score      = 0;
 		time       = 0;
 		
+		takanaka.play();
+		
 		bunny1.setWidthHeight(200,200);
 		bunny1.setScale(2, 2);
 		bunny1.setVx(0);
 		bunny1.setXY(0, 400);
 		
-		fairy1.setWidthHeight(200,200);
+		fairy1.setWidthHeight(100,100);
 		fairy1.setScale(3, 3);
 		fairy1.setVx(1);
+		fairy1.setPaintOffset(100);
 		
-		fairy2.setWidthHeight(200,200);
+		fairy2.setWidthHeight(100,100);
 		fairy2.setScale(3, 3);
 		fairy2.setVx(1);
+		fairy2.setPaintOffset(100);
 		
-		fairy3.setWidthHeight(200,200);
+		fairy3.setWidthHeight(100,100);
 		fairy3.setScale(3, 3);
 		fairy3.setVx(1);
+		fairy3.setPaintOffset(100);
 		
 		ground.setScale(1.1, 1.0);
 		ground.setXY(0, 0);
@@ -86,6 +95,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		int randVy3 = (int)(Math.random()*(4))-1;
 		fairy1.setVy(randVy3 + currRound);
+		
+		t.start();
 	}
 	
 	
@@ -109,6 +120,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		fairy3.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
 		int randVx3 = (int)(Math.random()*(4))-1;
 		fairy3.setVx(randVx3 + currRound);
+		
+		fairy1.setClicked(false);
+		fairy2.setClicked(false);
+		fairy3.setClicked(false);
+		
+		fairy1.setPicture("imgs/fairyIdle.gif");
+		fairy2.setPicture("imgs/fairyIdle.gif");
+		fairy3.setPicture("imgs/fairyIdle.gif");
+		
+		waitForSpaceBar = true;
+		
 	}
 	
 	
@@ -131,12 +153,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		
-		if(roundTimer == 30)
-		{
-			Font messageFont = new Font("Serif", Font.BOLD, 30);
-			g.setFont(messageFont);
-			g.drawString("Press the space bar for the next round", 250, 250);
-		}
 		
 		g.setFont(newFont);
 		
@@ -160,10 +176,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy3.paint(g);
 		}
 		
-		if(fairy1.getClicked() && fairy2.getClicked() && fairy3.getClicked())
-		{
-			nextRound();
-		}
 		
 		//logic for resetting dog or making it bounce around
 		if(fairy1.getY() > 400)
@@ -199,7 +211,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy3.setVx((fairy3.getVx())*(-1));
 		}
 		
+		if(waitForSpaceBar && currRound != 1)
+		{
+			Font messageFont = new Font("Serif", Font.BOLD, 30);
+			g.setFont(messageFont);
+			g.drawString("Press the space bar for the next round", 200, 75);
+			t.stop();
+		}
 		
+		
+		if(fairy1.getClicked() && fairy2.getClicked() && fairy3.getClicked() && fairy1.getY() > 400 && fairy2.getY() > 400 && fairy3.getY() > 400)
+		{
+			nextRound();
+		}
 		
 		g.drawString("" + this.roundTimer, 525, 50);
 		g.drawString("Round "+ this.currRound, 325, 50);
@@ -266,6 +290,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy1.setPicture("imgs/fairyGooned.gif");
 			fairy1.setVy(3);
 			fairy1.setClicked(true);
+			gooned.play();
 			
 		}
 		
@@ -279,6 +304,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy2.setPicture("imgs/fairyGooned.gif");
 			fairy2.setVy(3);
 			fairy2.setClicked(true);
+			gooned.play();
 		}
 		
 		Rectangle rFairy3 = new Rectangle(
@@ -291,6 +317,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy3.setPicture("imgs/fairyGooned.gif");
 			fairy3.setVy(3);
 			fairy3.setClicked(true);
+			gooned.play();
 		}
 		
 	
@@ -316,9 +343,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		//space bar continues the round
 		if(arg0.getKeyCode()==32)
 		{
-			if(!t.isRunning())
+			if(waitForSpaceBar)
 			{
 				t.start();
+				waitForSpaceBar = false;
 			}
 		}
 	}
