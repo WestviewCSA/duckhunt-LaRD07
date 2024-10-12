@@ -17,7 +17,7 @@ public class Character {
 	private int x, y;							//position
 	private double xScale = 1.0, yScale = 1.0;	//scaling (sizing)
 	private int width = 50, height = 50;
-	private boolean showHitBox = true;
+	private boolean showHitBox = false;
 	private int paintOffset = 0;
 	
 	public Character(String fileName) {
@@ -138,6 +138,7 @@ public class Character {
         tx.setToTranslation(a - paintOffset, b - paintOffset);
         tx.scale(xScale, yScale);
     }
+	
 
 	private Image getImage(String path) {
 		Image tempImage = null;

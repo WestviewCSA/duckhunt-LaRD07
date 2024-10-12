@@ -1,7 +1,9 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -25,10 +27,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Bunny bunny1 = new Bunny();
 	boolean waitForSpaceBar = true;
 	
+	int eyeX = 145;
+	int eyeY = 495;
+	
 	Music gooned = new Music("C:\\Users\\BAMMo\\OneDrive\\Documents\\GitHub\\duckhunt-LaRD07\\Duck Hunt Student\\src\\nightmare.wav", false);
 	Music takanaka = new Music("C:\\\\Users\\\\BAMMo\\\\OneDrive\\\\Documents\\\\GitHub\\\\duckhunt-LaRD07\\\\Duck Hunt Student\\\\src\\\\background.wav", true);
 	
 	GameBackground ground = new GameBackground("ground.png");
+	
+	
 	
 	//score related vars and timer
 	int    roundTimer;
@@ -109,6 +116,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	{
 		roundTimer = 30;
 		currRound++;
+		
 		fairy1.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
 		int randVx = (int)(Math.random()*(4))-1;
 		fairy1.setVx(randVx + currRound);
@@ -131,6 +139,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		waitForSpaceBar = true;
 		
+		
 	}
 	
 	
@@ -138,6 +147,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
 		
 		//add 20 to time since paint is called every 20ms
 		time += 20;
@@ -161,52 +171,102 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		bunny1.paint(g);
 		
+		
+		
 		if(!(fairy1.getClicked() && fairy1.getY() > 400))
 		{
 			fairy1.paint(g);
 		}
+		if(fairy1.getClicked() && fairy1.getY() <= 400)
+		{
+			g.setColor(Color.RED);
+			g.fillRect(eyeX, eyeY, 10, 10);
+			g2.setStroke(new BasicStroke(5));
+			g.drawLine(eyeX+5, eyeY+5, fairy1.getX()+50, fairy1.getY()+50);
+		}
+		
 		
 		if(!(fairy2.getClicked() && fairy2.getY() > 400))
 		{
 			fairy2.paint(g);
 		}
+		if(fairy2.getClicked() && fairy2.getY() <= 400)
+		{
+			g.setColor(Color.RED);
+			g.fillRect(eyeX, eyeY, 10, 10);
+			g2.setStroke(new BasicStroke(5));
+			g.drawLine(eyeX+5, eyeY+5, fairy2.getX()+50, fairy2.getY()+50);
+		}
+		
 		
 		if(!(fairy3.getClicked() && fairy3.getY() > 400))
 		{
 			fairy3.paint(g);
 		}
-		
+		if(fairy3.getClicked() && fairy3.getY() <= 400)
+		{
+			g.setColor(Color.RED);
+			g.fillRect(eyeX, eyeY, 10, 10);
+			g2.setStroke(new BasicStroke(5));
+			g.drawLine(eyeX+5, eyeY+5, fairy3.getX()+50, fairy3.getY()+50);
+		}
 		
 		//logic for resetting dog or making it bounce around
-		if(fairy1.getY() > 400)
+		if(fairy1.getY() > 465)
 		{
 			fairy1.setVy(fairy1.getVy()*-1);
 			
 		}
 		
-		if(fairy1.getX() > 700)
+		if(fairy1.getY() < 0)
+		{
+			fairy1.setVy(fairy1.getVy()*-1);
+			
+		}
+		
+		if(fairy1.getX() > 800)
+		{
+			fairy1.setVx((fairy1.getVx())*(-1));
+		}
+		if(fairy1.getX() < 0)
 		{
 			fairy1.setVx((fairy1.getVx())*(-1));
 		}
 		
-		if(fairy2.getY() > 400)
+		if(fairy2.getY() > 465)
 		{
 			fairy2.setVy(fairy2.getVy()*-1);
-			
+		}
+		if(fairy2.getY() < 0)
+		{
+			fairy2.setVy(fairy2.getVy()*-1);
 		}
 		
-		if(fairy2.getX() > 700)
+		if(fairy2.getX() > 800)
+		{
+			fairy2.setVx((fairy2.getVx())*(-1));
+		}
+		if(fairy2.getX() < 0)
 		{
 			fairy2.setVx((fairy2.getVx())*(-1));
 		}
 		
-		if(fairy3.getY() > 400)
+		if(fairy3.getY() > 465)
+		{
+			fairy3.setVy(fairy3.getVy()*-1);
+			
+		}
+		if(fairy3.getY() < 0)
 		{
 			fairy3.setVy(fairy3.getVy()*-1);
 			
 		}
 		
-		if(fairy3.getX() > 700)
+		if(fairy3.getX() > 800)
+		{
+			fairy3.setVx((fairy3.getVx())*(-1));
+		}
+		if(fairy3.getX() < 0)
 		{
 			fairy3.setVx((fairy3.getVx())*(-1));
 		}
@@ -220,8 +280,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		
 		
+		
+		
 		if(fairy1.getClicked() && fairy2.getClicked() && fairy3.getClicked() && fairy1.getY() > 400 && fairy2.getY() > 400 && fairy3.getY() > 400)
 		{
+			
 			nextRound();
 		}
 		
@@ -292,6 +355,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy1.setClicked(true);
 			gooned.play();
 			
+			
 		}
 		
 		Rectangle rFairy2 = new Rectangle(
@@ -305,6 +369,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy2.setVy(3);
 			fairy2.setClicked(true);
 			gooned.play();
+			
 		}
 		
 		Rectangle rFairy3 = new Rectangle(
@@ -318,6 +383,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy3.setVy(3);
 			fairy3.setClicked(true);
 			gooned.play();
+			
 		}
 		
 	
