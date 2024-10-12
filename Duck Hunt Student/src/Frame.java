@@ -211,6 +211,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			g.drawLine(eyeX+5, eyeY+5, fairy3.getX()+50, fairy3.getY()+50);
 		}
 		
+		
+		g.setColor(Color.BLACK);
+		g.drawString("Score: " + score, 50, 50);
+		
 		//logic for resetting dog or making it bounce around
 		if(fairy1.getY() > 465)
 		{
@@ -354,8 +358,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy1.setVy(3);
 			fairy1.setClicked(true);
 			gooned.play();
-			
-			
+			score++;
 		}
 		
 		Rectangle rFairy2 = new Rectangle(
@@ -369,7 +372,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy2.setVy(3);
 			fairy2.setClicked(true);
 			gooned.play();
-			
+			score++;
 		}
 		
 		Rectangle rFairy3 = new Rectangle(
@@ -383,7 +386,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy3.setVy(3);
 			fairy3.setClicked(true);
 			gooned.play();
-			
+			score++;
 		}
 		
 	
