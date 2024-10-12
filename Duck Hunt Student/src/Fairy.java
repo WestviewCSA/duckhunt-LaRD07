@@ -8,9 +8,23 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Fairy extends Character{
+	private boolean clicked;
 	
 	public Fairy() {
 		super("fairyIdle.gif");
+	}
+	public void setPicture(String picture) {
+        super.changePicture(picture);
+        }
+	
+	public void setClicked(boolean value)
+	{
+		clicked = value;
+	}
+	
+	public boolean getClicked()
+	{
+		return clicked;
 	}
 
 }

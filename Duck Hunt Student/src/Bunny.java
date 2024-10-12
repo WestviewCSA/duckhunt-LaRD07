@@ -10,7 +10,7 @@ import java.net.URL;
 public class Bunny extends Character{
 	
 	public Bunny() {
-		super("bunnyIdle.gif");
+		super("bunny.gif");
 	}
 
 }

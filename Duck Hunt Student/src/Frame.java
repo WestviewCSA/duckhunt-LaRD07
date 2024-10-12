@@ -21,8 +21,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Font newFont = new Font("Serif", Font.BOLD, 50);
 	Fairy fairy1 = new Fairy();
 	Fairy fairy2 = new Fairy();
+	Fairy fairy3 = new Fairy();
 	Bunny bunny1 = new Bunny();
-	Bunny bunny2 = new Bunny();
 	
 	GameBackground ground = new GameBackground("ground.png");
 	
@@ -42,28 +42,50 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		score      = 0;
 		time       = 0;
 		
-		bunny1.setScale(.5,  .5);
 		bunny1.setWidthHeight(200,200);
-		bunny1.setScale(3, 3);
+		bunny1.setScale(2, 2);
 		bunny1.setVx(0);
+		bunny1.setXY(0, 400);
 		
-		bunny2.setScale(.5,  .5);
-		bunny2.setWidthHeight(200,200);
-		bunny2.setScale(3, 3);
-		bunny2.setVx(0);
-		
-		fairy1.setScale(.5,  .5);
 		fairy1.setWidthHeight(200,200);
 		fairy1.setScale(3, 3);
 		fairy1.setVx(1);
 		
-		fairy2.setScale(.5,  .5);
 		fairy2.setWidthHeight(200,200);
 		fairy2.setScale(3, 3);
 		fairy2.setVx(1);
 		
+		fairy3.setWidthHeight(200,200);
+		fairy3.setScale(3, 3);
+		fairy3.setVx(1);
+		
 		ground.setScale(1.1, 1.0);
-		ground.setXY(0, 500);
+		ground.setXY(0, 0);
+		
+		fairy1.setClicked(false);
+		fairy2.setClicked(false);
+		fairy3.setClicked(false);
+		
+		fairy1.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
+		int randVx = (int)(Math.random()*(4))-1;
+		fairy1.setVx(randVx + currRound);
+		
+		int randVy = (int)(Math.random()*(4))-1;
+		fairy1.setVy(randVy + currRound);
+		
+		fairy2.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
+		int randVx2 = (int)(Math.random()*(4))-1;
+		fairy2.setVx(randVx2 + currRound);
+		
+		int randVy2 = (int)(Math.random()*(4))-1;
+		fairy1.setVy(randVy2 + currRound);
+
+		fairy3.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
+		int randVx3 = (int)(Math.random()*(4))-1;
+		fairy3.setVx(randVx3 + currRound);
+		
+		int randVy3 = (int)(Math.random()*(4))-1;
+		fairy1.setVy(randVy3 + currRound);
 	}
 	
 	
@@ -80,6 +102,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		int randVx = (int)(Math.random()*(4))-1;
 		fairy1.setVx(randVx + currRound);
 		
+		fairy2.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
+		int randVx2 = (int)(Math.random()*(4))-1;
+		fairy2.setVx(randVx2 + currRound);
+
+		fairy3.setXY((int)(Math.random()*(250))+10, (int)(Math.random()*(400))+10);
+		int randVx3 = (int)(Math.random()*(4))-1;
+		fairy3.setVx(randVx3 + currRound);
 	}
 	
 	
@@ -112,13 +141,29 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		g.setFont(newFont);
 		
 	
-		bunny1.paint(g);
-		
 		ground.paint(g);
 		
-		fairy1.paint(g);
+		bunny1.paint(g);
 		
-		fairy2.paint(g);
+		if(!(fairy1.getClicked() && fairy1.getY() > 400))
+		{
+			fairy1.paint(g);
+		}
+		
+		if(!(fairy2.getClicked() && fairy2.getY() > 400))
+		{
+			fairy2.paint(g);
+		}
+		
+		if(!(fairy3.getClicked() && fairy3.getY() > 400))
+		{
+			fairy3.paint(g);
+		}
+		
+		if(fairy1.getClicked() && fairy2.getClicked() && fairy3.getClicked())
+		{
+			nextRound();
+		}
 		
 		//logic for resetting dog or making it bounce around
 		if(fairy1.getY() > 400)
@@ -132,8 +177,32 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			fairy1.setVx((fairy1.getVx())*(-1));
 		}
 		
+		if(fairy2.getY() > 400)
+		{
+			fairy2.setVy(fairy2.getVy()*-1);
+			
+		}
+		
+		if(fairy2.getX() > 700)
+		{
+			fairy2.setVx((fairy2.getVx())*(-1));
+		}
+		
+		if(fairy3.getY() > 400)
+		{
+			fairy3.setVy(fairy3.getVy()*-1);
+			
+		}
+		
+		if(fairy3.getX() > 700)
+		{
+			fairy3.setVx((fairy3.getVx())*(-1));
+		}
+		
+		
+		
 		g.drawString("" + this.roundTimer, 525, 50);
-		g.drawString("Round"+ this.currRound, 325, 50);
+		g.drawString("Round "+ this.currRound, 325, 50);
 		
 	}
 	
@@ -187,22 +256,42 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		Rectangle rMouse = new Rectangle(mouse.getX(), mouse.getY(), 25, 25); //guess and check size for now
 		
 		//second rectangle will be for your object
-		Rectangle rFairy = new Rectangle(
+		Rectangle rFairy1 = new Rectangle(
 				fairy1.getX(), fairy1.getY(),
 				fairy1.getWidth(), fairy1.getHeight()
 				
 				);
-		if(rMouse.intersects(rFairy))
+		if(rMouse.intersects(rFairy1))
 		{
-			fairy1.setXY(1000, 1000);
-			
-			
-			fairy2.setVy(10);
-			fairy2.setVx(0);
+			fairy1.setPicture("imgs/fairyGooned.gif");
+			fairy1.setVy(3);
+			fairy1.setClicked(true);
 			
 		}
 		
+		Rectangle rFairy2 = new Rectangle(
+				fairy2.getX(), fairy2.getY(),
+				fairy2.getWidth(), fairy2.getHeight()
+				
+				);
+		if(rMouse.intersects(rFairy2))
+		{
+			fairy2.setPicture("imgs/fairyGooned.gif");
+			fairy2.setVy(3);
+			fairy2.setClicked(true);
+		}
 		
+		Rectangle rFairy3 = new Rectangle(
+				fairy3.getX(), fairy3.getY(),
+				fairy3.getWidth(), fairy3.getHeight()
+				
+				);
+		if(rMouse.intersects(rFairy3))
+		{
+			fairy3.setPicture("imgs/fairyGooned.gif");
+			fairy3.setVy(3);
+			fairy3.setClicked(true);
+		}
 		
 	
 	}
